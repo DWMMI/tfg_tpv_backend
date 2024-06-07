@@ -1,13 +1,12 @@
 package uem.tfg.tfg_tpv_backend.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "productos")
@@ -41,12 +40,14 @@ public class Producto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Madrid")
     private Date fechaStock;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "localizacion_id")
-    @JsonIgnore
     private Localizacion localizacion;
 
-    // Método para establecer la fecha automáticamente antes de persistir
+    @ManyToMany(mappedBy = "productos")
+    @JsonBackReference
+    private List<Venta> ventas;
+
     @PrePersist
     protected void onCreateOrUpdate() {
         if (this.fechaStock == null || this.ganancia == 0.0) {
@@ -55,9 +56,8 @@ public class Producto {
         }
     }
 
-
-
     // Getters y Setters
+
     public String getCodigoBarra() {
         return codigoBarra;
     }
@@ -136,5 +136,13 @@ public class Producto {
 
     public void setLocalizacion(Localizacion localizacion) {
         this.localizacion = localizacion;
+    }
+
+    public List<Venta> getVentas() {
+        return ventas;
+    }
+
+    public void setVentas(List<Venta> ventas) {
+        this.ventas = ventas;
     }
 }

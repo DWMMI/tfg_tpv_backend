@@ -1,65 +1,74 @@
 package uem.tfg.tfg_tpv_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Localizacion")
+@Table(name = "localizacion")
 public class Localizacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_Localizacion")
-    private Long ID_Localizacion;
-    @Column(name = "PasilloTienda")
-    private String PasilloTienda;
-    @Column(name = "EstanteriaTienda")
-    private String EstanteriaTienda;
-    @Column(name = "PasilloAlmacen")
-    private String PasilloAlmacen;
-    @Column(name = "EstanteriaAlmacen")
-    private String EstanteriaAlmacen;
+    @Column(name = "id_localizacion")
+    private Long idLocalizacion;
+
+    @Column(name = "pasillo_tienda")
+    private String pasilloTienda;
+
+    @Column(name = "estanteria_tienda")
+    private String estanteriaTienda;
+
+    @Column(name = "pasillo_almacen")
+    private String pasilloAlmacen;
+
+    @Column(name = "estanteria_almacen")
+    private String estanteriaAlmacen;
 
     @OneToMany(mappedBy = "localizacion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Producto> productos;
+    @JsonIgnore
+    private List<Producto> productos = new ArrayList<>();
 
-    public Long getID_Localizacion() {
-        return ID_Localizacion;
+    // Getters y Setters
+
+    public Long getIdLocalizacion() {
+        return idLocalizacion;
     }
 
-    public void setID_Localizacion(Long idLocalizacion) {
-        this.ID_Localizacion = idLocalizacion;
+    public void setIdLocalizacion(Long idLocalizacion) {
+        this.idLocalizacion = idLocalizacion;
     }
 
     public String getPasilloTienda() {
-        return PasilloTienda;
+        return pasilloTienda;
     }
 
     public void setPasilloTienda(String pasilloTienda) {
-        this.PasilloTienda = pasilloTienda;
+        this.pasilloTienda = pasilloTienda;
     }
 
     public String getEstanteriaTienda() {
-        return EstanteriaTienda;
+        return estanteriaTienda;
     }
 
     public void setEstanteriaTienda(String estanteriaTienda) {
-        this.EstanteriaTienda = estanteriaTienda;
+        this.estanteriaTienda = estanteriaTienda;
     }
 
     public String getPasilloAlmacen() {
-        return PasilloAlmacen;
+        return pasilloAlmacen;
     }
 
     public void setPasilloAlmacen(String pasilloAlmacen) {
-        this.PasilloAlmacen = pasilloAlmacen;
+        this.pasilloAlmacen = pasilloAlmacen;
     }
 
     public String getEstanteriaAlmacen() {
-        return EstanteriaAlmacen;
+        return estanteriaAlmacen;
     }
 
     public void setEstanteriaAlmacen(String estanteriaAlmacen) {
-        this.EstanteriaAlmacen = estanteriaAlmacen;
+        this.estanteriaAlmacen = estanteriaAlmacen;
     }
 
     public List<Producto> getProductos() {
@@ -69,4 +78,5 @@ public class Localizacion {
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
+    // ...
 }

@@ -1,43 +1,50 @@
 package uem.tfg.tfg_tpv_backend.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
-
+import java.util.List;
 
 @Entity
-@Table(name = "Ventas")
+@Table(name = "ventas")
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_venta")
     private Long idVenta;
-    @Column(name = "Fecha")
+
+    @Column(name = "fecha")
     private Date fecha;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ID_Empleado")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_empleado")
     private Empleado empleado;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ID_Cliente")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CodigoBarra")
-    private Producto producto;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "venta_producto",
+            joinColumns = @JoinColumn(name = "venta_id"),
+            inverseJoinColumns = @JoinColumn(name = "producto_id")
+    )
+    @JsonManagedReference
+    private List<Producto> productos;
 
     @PrePersist
     protected void onCreate() {
-        if (this.fecha == null ) {
-            this.fecha = java.util.Date.from(ZonedDateTime.now(ZoneId.of("Europe/Madrid")).toInstant());
+        if (this.fecha == null) {
+            this.fecha = Date.from(ZonedDateTime.now(ZoneId.of("Europe/Madrid")).toInstant());
         }
     }
 
+    // Getters y Setters
 
     public Long getIdVenta() {
         return idVenta;
@@ -71,11 +78,11 @@ public class Venta {
         this.cliente = cliente;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public List<Producto> getProductos() {
+        return productos;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 }

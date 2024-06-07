@@ -13,6 +13,7 @@ import uem.tfg.tfg_tpv_backend.model.Producto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VentaService {
@@ -57,15 +58,21 @@ public class VentaService {
             venta.setCliente(clienteOpt.get());
         }
 
-        // Verificar existencia de Producto
-        Optional<Producto> productoOpt = productoRepository.findById(venta.getProducto().getCodigoBarra());
-        if (!productoOpt.isPresent()) {
-            throw new RuntimeException("Producto no encontrado");
-        }
+        // Verificar existencia de Productos
+        List<Producto> productosVerificados = venta.getProductos().stream()
+                .map(producto -> {
+                    Optional<Producto> productoOpt = productoRepository.findById(producto.getCodigoBarra());
+                    if (!productoOpt.isPresent()) {
+                        throw new RuntimeException("Producto no encontrado: " + producto.getCodigoBarra());
+                    }
+                    return productoOpt.get();
+                })
+                .collect(Collectors.toList());
 
-        // Asignar el producto encontrado a la venta
-        venta.setProducto(productoOpt.get());
+        // Asignar los productos verificados a la venta
+        venta.setProductos(productosVerificados);
 
+        // Guardar la venta en el repositorio
         return ventaRepository.save(venta);
     }
 
