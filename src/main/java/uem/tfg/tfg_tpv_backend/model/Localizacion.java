@@ -25,7 +25,7 @@ public class Localizacion {
     @Column(name = "estanteria_almacen")
     private String estanteriaAlmacen;
 
-    @OneToMany(mappedBy = "localizacion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "localizacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Producto> productos = new ArrayList<>();
 

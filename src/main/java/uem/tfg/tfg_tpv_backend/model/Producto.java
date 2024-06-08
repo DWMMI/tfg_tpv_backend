@@ -40,12 +40,12 @@ public class Producto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Madrid")
     private Date fechaStock;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "localizacion_id")
     private Localizacion localizacion;
 
     @ManyToMany(mappedBy = "productos")
-    @JsonBackReference
+    @JsonIgnore
     private List<Venta> ventas;
 
     @PrePersist

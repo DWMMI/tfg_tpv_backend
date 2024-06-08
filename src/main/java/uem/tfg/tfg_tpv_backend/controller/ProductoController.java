@@ -3,7 +3,9 @@ package uem.tfg.tfg_tpv_backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uem.tfg.tfg_tpv_backend.model.Localizacion;
 import uem.tfg.tfg_tpv_backend.model.Producto;
+import uem.tfg.tfg_tpv_backend.repository.LocalizacionRepository;
 import uem.tfg.tfg_tpv_backend.service.ProductoService;
 
 import java.util.List;
@@ -14,6 +16,8 @@ public class ProductoController {
 
     @Autowired
     private ProductoService productoService;
+    @Autowired
+    private LocalizacionRepository localizacionRepository;
 
     @GetMapping
     public List<Producto> getAllProductos() {
@@ -28,6 +32,11 @@ public class ProductoController {
 
     @PostMapping
     public Producto createProducto(@RequestBody Producto producto) {
+        Localizacion localizacion = producto.getLocalizacion();
+        if (localizacion != null) {
+            localizacion = localizacionRepository.save(localizacion);
+            producto.setLocalizacion(localizacion);
+        }
         return productoService.save(producto);
     }
 
