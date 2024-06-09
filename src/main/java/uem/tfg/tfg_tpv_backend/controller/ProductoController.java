@@ -40,7 +40,7 @@ public class ProductoController {
         return productoService.save(producto);
     }
 
-    @PutMapping("/{CodigoBarra}")
+    @PutMapping("/{codigoBarra}")
     public Producto updateProducto(@PathVariable String codigoBarra, @RequestBody Producto producto) {
         producto.setCodigoBarra(codigoBarra);
         return productoService.save(producto);

@@ -1,7 +1,6 @@
 package uem.tfg.tfg_tpv_backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.ZoneId;
@@ -11,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "ventas")
+@JsonIgnoreProperties({"ventas"})
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,6 @@ public class Venta {
             joinColumns = @JoinColumn(name = "venta_id"),
             inverseJoinColumns = @JoinColumn(name = "producto_id")
     )
-    @JsonManagedReference
     private List<Producto> productos;
 
     @PrePersist

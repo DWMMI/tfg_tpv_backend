@@ -45,8 +45,9 @@ public class Producto {
     private Localizacion localizacion;
 
     @ManyToMany(mappedBy = "productos")
-    @JsonIgnore
+    @JsonBackReference
     private List<Venta> ventas;
+
 
     @PrePersist
     protected void onCreateOrUpdate() {
