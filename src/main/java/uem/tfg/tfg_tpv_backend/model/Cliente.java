@@ -25,6 +25,8 @@ public class Cliente {
     private String email;
     @Column(name = "CIF")
     private String cif;
+    @Column(name = "contrasena")
+    private String contrasena;
 
     @OneToMany(mappedBy = "cliente")
     @JsonIgnore
@@ -92,5 +94,13 @@ public class Cliente {
 
     public void setVentas(List<Venta> ventas) {
         this.ventas = ventas;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 }
